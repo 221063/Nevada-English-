@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Header */
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        /* Niveles */
+        .levels-section {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+        .level-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .level-card:hover {
+            transform: translateY(-10px);
+        }
+        .level-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        .level-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .level-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .tool-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .tool-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tool-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .content-area {
+            min-height: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            background: #f8f9fa;
+        }
+        /* Listen Tool */
+        .listen-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .audio-player {
+            width: 100%;
+            max-width: 400px;
+        }
+        .word-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+        /* Speak Tool */
+        .speak-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .mic-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mic-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        .feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .feedback.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .feedback.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        /* Read Tool */
+        .read-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .reading-text {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .vocabulary-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .vocab-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .vocab-word {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        .vocab-meaning {
+            color: #666;
+            margin-top: 5px;
+        }
+        /* Write Tool */
+        .write-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .exercise-prompt {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .text-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 150px;
+        }
+        .check-answer {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .check-answer:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+        /* Games Section */
+        .games-section {
+            margin-top: 40px;
+            display: none;
+        }
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        .game-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        /* Progress Section */
+        .progress-section {
+            margin-top: 40px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            display: none;
+        }
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .levels-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .level-card {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+            .tool-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tool-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><i class="fas fa-globe"></i> English Learning App</h1>
+            <p class="subtitle">Aprende inglés de manera divertida y efectiva</p>
+        </header>
+        <!-- Levels Selection -->
+        <section class="levels-section" id="levelsSection">
+            <div class="level-card" onclick="selectLevel('basico')">
+                <div class="level-icon"><i class="fas fa-seedling"></i></div>
+                <h2 class="level-title">Básico</h2>
+                <p class="level-description">Comienza tu viaje aprendiendo lo esencial: vocabulario básico, frases comunes y pronunciación.</p>
+            </div>
+            <div class="level-card" onclick="selectLevel('intermedio')">
+                <div class="level-icon"><i class="fas fa-book-open"></i></div>
+                <h2 class="level-title">Intermedio</h2>
+                <p class="level-description">Mejora tus habilidades con gramática más compleja, comprensión auditiva y conversaciones.</p>
+            </div>
+            <div class="level-card" onclick="selectLevel('avanzado')">
+                <div class="level-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h2 class="level-title">Avanzado</h2>
+                <p class="level-description">Domina el idioma con expresiones idiomáticas, lectura de textos complejos y escritura profesional.</p>
+            </div>
+        </section>
+        <!-- Main Content Area -->
+        <div class="main-content" id="mainContent">
+            <h2 id="currentLevelTitle">Nivel Básico</h2>
+            <!-- Tools Section -->
+            <div class="tool-buttons">
+                <button class="tool-btn" onclick="showTool('listen')">
+                    <i class="fas fa-headphones"></i> Escuchar
+                </button>
+                <button class="tool-btn" onclick="showTool('speak')">
+                    <i class="fas fa-microphone"></i> Pronunciar
+                </button>
+                <button class="tool-btn" onclick="showTool('read')">
+                    <i class="fas fa-book"></i> Leer
+                </button>
+                <button class="tool-btn" onclick="showTool('write')">
+                    <i class="fas fa-pen"></i> Escribir
+                </button>
+            </div>
+            <!-- Content Area for Tools -->
+            <div class="content-area" id="contentArea">
+                <div class="welcome-message">
+                    <h3>Bienvenido al Nivel Básico!</h3>
+                    <p>Selecciona una herramienta para comenzar tu aprendizaje:</p>
+                    <ul style="margin-top: 20px; list-style-type: none;">
+                        <li><i class="fas fa-check-circle" style="color: #28a745;"></i> Escucha palabras y frases</li>
+                        <li><i class="fas fa-check-circle" style="color: #28a745;"></i> Practica tu pronunciación</li>
+                        <li><i class="fas fa-check-circle" style="color: #28a745;"></i> Lee textos sencillos</li>
+                        <li><i class="fas fa-check-circle" style="color: #28a745;"></i> Escribe oraciones básicas</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Games Section -->
+            <div class="games-section" id="gamesSection">
+                <h3>Juegos Educativos</h3>
+                <div class="game-container">
+                    <div class="game-card" onclick="startGame('matching')">
+                        <div class="game-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <h4>Emparejar Palabras</h4>
+                        <p>Une palabras en inglés con sus traducciones</p>
+                    </div>
+                    <div class="game-card" onclick="startGame('quiz')">
+                        <div class="game-icon"><i class="fas fa-question-circle"></i></div>
+                        <h4>Cuestionario Rápido</h4>
+                        <p>Prueba tus conocimientos con preguntas rápidas</p>
+                    </div>
+                    <div class="game-card" onclick="startGame('spelling')">
+                        <div class="game-icon"><i class="fas fa-spell-check"></i></div>
+                        <h4>Ortografía</h4>
+                        <p>Escribe correctamente las palabras que escuchas</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Progress Section -->
+            <div class="progress-section" id="progressSection">
+                <h3>Tu Progreso</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">Progreso: 0%</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="wordsLearned">0</div>
+                        <div class="stat-label">Palabras Aprendidas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="exercisesCompleted">0</div>
+                        <div class="stat-label">Ejercicios Completados</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">Precisión</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="streak">0</div>
+                        <div class="stat-label">Racha Diaria</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Datos de ejemplo por nivel
+        const levelData = {
+            basico: {
+                words: ['hello', 'goodbye', 'thank you', 'please', 'yes', 'no'],
+                meanings: ['hola', 'adiós', 'gracias', 'por favor', 'sí', 'no'],
+                sentences: [
+                    {english: "Hello, how are you?", spanish: "Hola, ¿cómo estás?"},
+                    {english: "Thank you very much.", spanish: "Muchas gracias."},
+                    {english: "Please sit down.", spanish: "Por favor siéntate."}
+                ],
+                writingPrompts: [
+                    "Write about your family",
+                    "Describe your favorite food",
+                    "Write about your daily routine"
+                ]
+            },
+            intermedio: {
+                words: ['conversation', 'experience', 'opportunity', 'challenge', 'achievement', 'responsibility'],
+                meanings: ['conversación', 'experiencia', 'oportunidad', 'desafío', 'logro', 'responsabilidad'],
+                sentences: [
+                    {english: "We had an interesting conversation about art.", spanish: "Tuvimos una conversación interesante sobre arte."},
+                    {english: "This job offers great opportunities for growth.", spanish: "Este trabajo ofrece grandes oportunidades de crecimiento."},
+                    {english: "Learning a new language is both challenging and rewarding.", spanish: "Aprender un nuevo idioma es tanto desafiante como gratificante."}
+                ],
+                writingPrompts: [
+                    "Write an email to a friend about your vacation",
+                    "Describe a difficult situation you overcame",
+                    "Write about your career goals"
+                ]
+            },
+            avanzado: {
+                words: ['phenomenon', 'controversy', 'perspective', 'endeavor', 'intricate', 'ubiquitous'],
+                meanings: ['fenómeno', 'controversia', 'perspectiva', 'esfuerzo', 'intricado', 'ubícuo'],
+                sentences: [
+                    {english: "The phenomenon of climate change affects every aspect of our lives.", spanish: "El fenómeno del cambio climático afecta todos los aspectos de nuestras vidas."},
+                    {english: "There is ongoing controversy regarding the new policy.", spanish: "Existe controversia continua respecto a la nueva política."},
+                    {english: "From my perspective, we should consider all options carefully.", spanish: "Desde mi perspectiva, deberíamos considerar todas las opciones cuidadosamente."}
+                ],
+                writingPrompts: [
+                    "Write an opinion essay on current social issues",
+                    "Compose a formal business proposal",
+                    "Create a persuasive speech on environmental conservation"
+                ]
+            }
+        };
+        let currentLevel = '';
+        let progress = {
+            wordsLearned: 0,
+            exercisesCompleted: 0,
+            accuracy: 0,
+            streak: 0
+        };
+        function selectLevel(level) {
+            currentLevel = level;
+            document.getElementById('levelsSection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            const levelNames = {
+                basico: 'Básico',
+                intermedio: 'Intermedio',
+                avanzado: 'Avanzado'
+            };
+            document.getElementById('currentLevelTitle').textContent = `Nivel ${levelNames[level]}`;
+            updateProgress();
+        }
+        function showTool(tool) {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.innerHTML = '';
+            switch(tool) {
+                case 'listen':
+                    showListenTool();
+                    break;
+                case 'speak':
+                    showSpeakTool();
+                    break;
+                case 'read':
+                    showReadTool();
+                    break;
+                case 'write':
+                    showWriteTool();
+                    break;
+            }
+            // Mostrar sección de juegos después de seleccionar una herramienta
+            setTimeout(() => {
+                document.getElementById('gamesSection').style.display = 'block';
+            }, 500);
+            // Mostrar sección de progreso después de algunos segundos
+            setTimeout(() => {
+                document.getElementById('progressSection').style.display = 'block';
+            }, 1000);
+        }
+        function showListenTool() {
+            const data = levelData[currentLevel];
+            const randomIndex = Math.floor(Math.random() * data.words.length);
+            const word = data.words[randomIndex];
+            const meaning = data.meanings[randomIndex];
+            const listenHTML = `
+                <div class="listen-tool">
+                    <h3>Escucha y Aprende</h3>
+                    <div class="word-display">${word}</div>
+                    <audio controls class="audio-player">
+                        <source src="https://ssl.gstatic.com/dictionary/static/sounds/de/0/${word}.mp3" type="audio/mpeg">
+                        Tu navegador no soporta audio.
+                    </audio>
+                    <div class="meaning">
+                        <strong>Significado:</strong> ${meaning}
+                    </div>
+                    <button class="tool-btn" onclick="nextWord()">
+                        <i class="fas fa-forward"></i> Siguiente Palabra
+                    </button>
+                </div>
+            `;
+            document.getElementById('contentArea').innerHTML = listenHTML;
+        }
+        function showSpeakTool() {
+            const speakHTML = `
+                <div class="speak-tool">
+                    <h3>Pronuncia la Palabra</h3>
+                    <p>Presiona el micrófono y di aloud la palabra que aparece</p>
+                    <div class="word-display" id="speakWord">hello</div>
+                    <button class="mic-button" onclick="startRecording()">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <div id="recordingFeedback"></div>
+                    <button class="tool-btn" onclick="getNewWord()">
+                        <i class="fas fa-sync-alt"></i> Nueva Palabra
+                    </button>
+                </div>
+            `;
+            document.getElementById('contentArea').innerHTML = speakHTML;
+            getNewWord();
+        }
+        function showReadTool() {
+            const data = levelData[currentLevel];
+            const readHTML = `
+                <div class="read-tool">
+                    <h3>Lectura Comprensiva</h3>
+                    <div class="reading-text">
+                        ${data.sentences[0].english}<br><br>
+                        ${data.sentences[1].english}<br><br>
+                        ${data.sentences[2].english}
+                    </div>
+                    <button class="tool-btn" onclick="showVocabulary()">
+                        <i class="fas fa-list"></i> Ver Vocabulario
+                    </button>
+                </div>
+            `;
+            document.getElementById('contentArea').innerHTML = readHTML;
+        }
+        function showVocabulary() {
+            const data = levelData[currentLevel];
+            let vocabHTML = '<h3>Vocabulario Clave</h3><div class="vocabulary-list">';
+            for(let i = 0; i < data.words.length; i++) {
+                vocabHTML += `
+                    <div class="vocab-item">
+                        <div class="vocab-word">${data.words[i]}</div>
+                        <div class="vocab-meaning">${data.meanings[i]}</div>
+                    </div>
+                `;
+            }
+            vocabHTML += '</div>';
+            document.querySelector('.read-tool').innerHTML = vocabHTML + 
+                `<button class="tool-btn" onclick="showReadTool()">
+                    <i class="fas fa-arrow-left"></i> Regresar a Lectura
+                </button>`;
+        }
+        function showWriteTool() {
+            const data = levelData[currentLevel];
+            const prompt = data.writingPrompts[Math.floor(Math.random() * data.writingPrompts.length)];
+            const writeHTML = `
+                <div class="write-tool">
+                    <h3>Escribir</h3>
+                    <div class="exercise-prompt">${prompt}</div>
+                    <textarea class="text-input" placeholder="Escribe aquí..."></textarea>
+                    <button class="check-answer" onclick="checkWriting()">Verificar Respuesta</button>
+                    <div id="writingFeedback"></div>
+                </div>
+            `;
+            document.getElementById('contentArea').innerHTML = writeHTML;
+        }
+        function nextWord() {
+            showListenTool();
+        }
+        function getNewWord() {
+            const data = levelData[currentLevel];
+            const randomIndex = Math.floor(Math.random() * data.words.length);
+            document.getElementById('speakWord').textContent = data.words[randomIndex];
+        }
+        function startRecording() {
+            const feedback = document.getElementById('recordingFeedback');
+            feedback.className = 'feedback success';
+            feedback.textContent = '🎤 Grabando... Di la palabra cuando estés listo!';
+        }
+        function checkWriting() {
+            const textarea = document.querySelector('.text-input');
+            const feedback = document.getElementById('writingFeedback');
+            if(textarea.value.trim()) {
+                feedback.className = 'feedback success';
+                feedback.textContent = '¡Excelente! Has completado el ejercicio. Sigue practicando.';
+                progress.exercisesCompleted++;
+                updateProgress();
+            } else {
+                feedback.className = 'feedback error';
+                feedback.textContent = 'Por favor, escribe algo antes de verificar.';
+            }
+        }
+        function startGame(gameType) {
+            alert(`Juego "${gameType}" iniciado! Esta función estará disponible en la próxima versión.`);
+        }
+        function updateProgress() {
+            // Actualizar barra de progreso
+            const progressPercent = Math.min(progress.exercisesCompleted * 5, 100);
+            document.getElementById('progressFill').style.width = `${progressPercent}%`;
+            document.getElementById('progressText').textContent = `Progreso: ${progressPercent}%`;
+            // Actualizar estadísticas
+            document.getElementById('wordsLearned').textContent = progress.wordsLearned;
+            document.getElementById('exercisesCompleted').textContent = progress.exercisesCompleted;
+            document.getElementById('accuracy').textContent = `${progress.accuracy}%`;
+            document.getElementById('streak').textContent = progress.streak;
+        }
+        // Inicialización
+        window.onload = function() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('gamesSection').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'none';
+        };
+    </script>
+</body>
+</html>
