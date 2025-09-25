@@ -1,0 +1,43 @@
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+using Unity.MARS;
+using AppleARKit;
+
+public class PhoneticCombatTracker : MonoBehaviour
+{
+    public ARFaceManager faceManager;
+    public HapticVestController hapticVest;
+    public QuantumNLPIntegrator qnlp;
+
+    private void Update()
+    {
+        foreach (var face in faceManager.trackables)
+        {
+            var articulationData = CaptureVocalTract(face);
+            var errorVector = qnlp.AnalyzePhonemeError(articulationData, targetPhoneme: "/θ/");
+
+            if (errorVector.magnitude > 0.15f)
+            {
+                SpawnEnemy("ThornBeast");
+                hapticVest.Vibrate(Zone.Chest, intensity: errorVector.magnitude * 100f);
+            }
+            else
+            {
+                ApplyDamageToEnemy(2f);
+            }
+        }
+    }
+
+    private Vector4[] CaptureVocalTract(ARFace face)
+    {
+        var blendShapes = face.GetBlendShapeCoefficients();
+        return SimulateSoftTissue(blendShapes);
+    }
+
+    private void SpawnEnemy(string enemyType)
+    {
+        var enemyPrefab = Resources.Load<GameObject>(enemyType);
+        Instantiate(enemyPrefab, GetARPlacementPosition(), Quaternion.identity);
+    }
+}
