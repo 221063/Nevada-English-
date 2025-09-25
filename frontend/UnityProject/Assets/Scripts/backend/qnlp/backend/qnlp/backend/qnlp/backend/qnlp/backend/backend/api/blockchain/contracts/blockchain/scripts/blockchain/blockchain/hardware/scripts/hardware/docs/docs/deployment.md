@@ -48,3 +48,6 @@ npx hardhat run scripts/deploy.js --network localhost
 ## Notas
 - El despliegue completo requiere ajustes adicionales (e.g., configuración de Firebase para autenticación).
 - Pruebas locales son recomendadas antes de producción.
+## Próximos Pasos
+- Automatizar despliegue con GitHub Actions.
+- Documentar configuración de producción detallada.
