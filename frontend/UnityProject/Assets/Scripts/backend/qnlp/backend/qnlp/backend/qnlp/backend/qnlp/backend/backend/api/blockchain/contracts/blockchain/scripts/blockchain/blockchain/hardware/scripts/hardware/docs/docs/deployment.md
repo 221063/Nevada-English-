@@ -29,3 +29,14 @@ python server.py
   cd blockchain
   npx hardhat node
 npx hardhat run scripts/deploy.js --network localhost
+### 4. Configurar el Frontend (Unity)
+- Abre `frontend/UnityProject/` en Unity Editor.
+- Ajusta la URL de la API en `PhoneticCombatTracker.cs` si es necesario.
+- Construye y ejecuta el proyecto.
+
+### 5. Ejecutar el Hardware
+- Inicia el script de biofeedback:
+  ```bash
+  cd hardware/scripts
+  python biofeedback.py
+
