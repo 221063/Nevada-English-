@@ -39,4 +39,12 @@ npx hardhat run scripts/deploy.js --network localhost
   ```bash
   cd hardware/scripts
   python biofeedback.py
+## Despliegue en Producción
+- **Backend**: Despliega `server.py` en un servidor (e.g., Heroku) con `gunicorn`.
+- **Blockchain**: Despliega `GrammarNFT.sol` en una red como Rinkeby usando Hardhat.
+- **Frontend**: Exporta el proyecto Unity a una plataforma compatible (e.g., WebGL).
+- **Hardware**: Integra sensores reales y configura una conexión estable.
 
+## Notas
+- El despliegue completo requiere ajustes adicionales (e.g., configuración de Firebase para autenticación).
+- Pruebas locales son recomendadas antes de producción.
