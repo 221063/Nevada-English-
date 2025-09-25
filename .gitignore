@@ -1,0 +1,21 @@
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Python
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+.pytest_cache/
+
+# Node/Hardhat
+node_modules/
+.cache/
+artifacts/
+coverage/
