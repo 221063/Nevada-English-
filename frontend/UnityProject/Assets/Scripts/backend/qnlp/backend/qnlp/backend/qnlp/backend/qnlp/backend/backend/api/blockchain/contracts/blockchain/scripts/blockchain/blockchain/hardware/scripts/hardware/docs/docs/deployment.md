@@ -17,9 +17,3 @@ Este documento detalla los pasos para desplegar Nevada-English localmente o en u
 git clone https://github.com/tu-usuario/Nevada-English.git
 cd Nevada-English
 
-### 2. Configurar el Backend
-- Instala dependencias:
-  ```bash
-  ./setup.sh
-cd backend/api
-python server.py
