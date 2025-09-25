@@ -1,0 +1,46 @@
+import qutip as qt
+import numpy as np
+
+H_matrix = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
+H = qt.Qobj(H_matrix)
+CNOT_matrix = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]])
+CNOT = qt.Qobj(CNOT_matrix, dims=[[2, 2], [2, 2]])
+
+emotion_map = {"excited": [1.0, 0.5, 0.8], "angry": [0.5, 1.0, 0.2], "sad": [0.2, 0.3, 0.1], "happy": [0.9, 0.4, 0.7], "neutral": [0.0, 0.0, 0.0]}
+context_map = {"restaurant order": [0.8, 0.4, 0.6], "conversation": [0.6, 0.7, 0.5], "argument": [0.4, 0.9, 0.3], "greeting": [0.7, 0.3, 0.4]}
+
+def quantumEmotionAnalyzer(userTone: str, context: str):
+    phi = emotion_map.get(userTone.lower(), [0.0, 0.0, 0.0])
+    psi = context_map.get(context.lower(), [0.0, 0.0, 0.0])
+    phi1, phi2, phi3 = np.pi * np.array(phi[:3])
+    psi1, psi2, psi3 = np.pi * np.array(psi[:3])
+
+    state = qt.basis(4, 0)
+    state.dims = [[2, 2], [1, 1]]
+    H1 = qt.tensor(H, qt.qeye(2))
+    H2 = qt.tensor(qt.qeye(2), H)
+    state = H2 * H1 * state
+
+    Rx1 = qt.tensor((-1j * phi1 / 2 * qt.sigmax()).expm(), qt.qeye(2))
+    Rx2 = qt.tensor(qt.qeye(2), (-1j * phi2 / 2 * qt.sigmax()).expm())
+    state = Rx2 * Rx1 * state
+    state = CNOT * state
+    Rx3 = qt.tensor((-1j * psi1 / 2 * qt.sigmax()).expm(), qt.qeye(2))
+    Rx4 = qt.tensor(qt.qeye(2), (-1j * psi2 / 2 * qt.sigmax()).expm())
+    state = Rx4 * Rx3 * state
+    zz = qt.tensor(qt.sigmaz(), qt.sigmaz())
+    u_zz = (-1j * (phi3 * psi3) * zz / 2).expm()
+    state = u_zz * state
+
+    probs = [abs(qt.basis(4, i).dag() * state)**2 for i in range(4)]
+    emotionScore = probs[0] + probs[3]
+    if emotionScore > 0.8: npcReaction = "enthusiastic"
+    elif emotionScore > 0.6: npcReaction = "smile"
+    elif emotionScore > 0.4: npcReaction = "neutral"
+    else: npcReaction = "ignore"
+    return npcReaction, emotionScore
+
+if __name__ == "__main__":
+    for tone, ctx in [("excited", "restaurant order"), ("angry", "conversation")]:
+        reaction, score = quantumEmotionAnalyzer(tone, ctx)
+        print(f"Tone: {tone}, Context: {ctx} -> Reaction: {reaction}, Score: {score:.4f}")
