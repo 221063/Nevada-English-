@@ -23,3 +23,9 @@ cd Nevada-English
   ./setup.sh
 cd backend/api
 python server.py
+### 3. Configurar la Blockchain
+- Inicia una red local Hardhat:
+  ```bash
+  cd blockchain
+  npx hardhat node
+npx hardhat run scripts/deploy.js --network localhost
