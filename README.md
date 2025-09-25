@@ -1,44 +1,21 @@
-“Videojuego Educativo Multidimensional para Dominio del Inglés con IA Cuántica y Realidad Extendida”
-NevadaEnglish/
-├── README.md
-├── .gitignore
-├── LICENSE
-├── docs/
-│   ├── architecture.md
-│   └── ethics.md
-├── frontend/
-│   ├── UnityProject/
-│   │   ├── Assets/
-│   │   │   ├── Scripts/
-│   │   │   ├── Prefabs/
-│   │   │   └── Scenes/
-│   │   ├── Packages/
-│   │   └── ProjectSettings/
-│   └── UnrealProject/
-│       └── Content/
-├── backend/
-│   ├── qnlp/
-│   │   ├── __init__.py
-│   │   └── emotion_analyzer.py
-│   ├── api/
-│   │   └── server.py
-│   ├── requirements.txt
-│   └── config/
-├── blockchain/
-│   ├── contracts/
-│   │   └── GrammarNFT.sol
-│   ├── scripts/
-│   │   └── deploy.js
-│   ├── hardhat.config.js
-│   └── package.json
-├── hardware/
-│   ├── scripts/
-│   │   └── biofeedback.py
-│   └── docs/
-│       └── integration.md
-├── tests/
-│   ├── frontend/
-│   └── backend/
-├── .github/workflows/
-│   └── ci.yml
-└── setup.sh
+# Nevada-English: Aprende Inglés con IA
+
+¡Un juego educativo con IA cuántica y AR!
+
+## Acerca de
+Aprende inglés con Phonetic Combat, Grammar Forge y Dialog Dojo.
+
+## Estructura
+- [docs/](docs/)
+- [frontend/](frontend/)
+- [backend/](backend/)
+- [blockchain/](blockchain/)
+- [hardware/](hardware/)
+
+## Instalación
+1. Clona: `git clone https://github.com/tu-usuario/Nevada-English.git`
+2. Instala: `pip install -r backend/requirements.txt` (necesitas PC)
+3. Corre: `python backend/api/server.py`
+
+## Licencia
+MIT
