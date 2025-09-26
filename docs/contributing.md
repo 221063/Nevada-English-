@@ -17,3 +17,8 @@
 3. **Descarga programas básicos**:
    - Necesitas: Python 3.9+ (para el backend), Node.js 16+ (para blockchain), Unity Editor (para el juego), y Git (para guardar cambios).
    - Si no los tienes, busca "descargar [nombre]" en tu navegador y sigue las instrucciones.
+## Hacer Cambios
+1. **Crea una Rama**:
+   - Usa un nombre descriptivo, e.g., `feature/nueva-prueba` o `fix/bug-api`.
+   ```bash
+   git checkout -b feature/nueva-prueba
