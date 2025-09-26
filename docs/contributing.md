@@ -22,3 +22,14 @@
    - Usa un nombre descriptivo, e.g., `feature/nueva-prueba` o `fix/bug-api`.
    ```bash
    git checkout -b feature/nueva-prueba
+   2. **Cambia el código**:
+   - Abre y edita los archivos en las carpetas que necesitas (por ejemplo, `backend/` para Python, `blockchain/` para contratos, `frontend/` para el juego, `hardware/` para sensores, o `tests/` para pruebas).
+   - Prueba tu cambio para asegurarte de que funcione. Usa comandos simples como `pytest tests/` para probar Python, o `npx hardhat test` para blockchain.
+
+3. **Guarda tus cambios**:
+   - Usa este comando para guardar todo:
+     ```bash
+     git add .
+     git commit -m "Añadí una nueva función [escribe qué cambiaste]"
+     ```
+     
