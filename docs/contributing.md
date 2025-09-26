@@ -12,7 +12,7 @@
   - Toca "Update file" y escribe "Parte 2 de contributing" en el mensaje de commit.
   - Guarda y verifica.
 
-#### Parte 3 (Cómo Comenzar - Configura el Entorno e Instala Herramientas)
+#### Cómo Comenzar - Configura el Entorno e Instala Herramientas)
 ```markdown
 2. **Configura el Entorno**:
    - Ejecuta `./setup.sh` para instalar dependencias.
