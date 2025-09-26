@@ -1,4 +1,4 @@
-# Nevada-English: Aprende Inglés con IA
+# NevadaEnglish: Aprende Inglés con IA
 
 ¡Un juego educativo con IA cuántica y AR!
 
