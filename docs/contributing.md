@@ -53,3 +53,12 @@
 - **Actualiza la guía**: Si cambias algo importante (como el backend o el juego), añade notas en `docs/` (por ejemplo, `architecture.md`).
 - **Escribe código limpio**: Sigue el estilo de los archivos que ya tienes (usa 4 espacios para Python, usa Solidity 0.8.0).
 - **Revisa el automático**: Asegúrate de que `.github/workflows/ci.yml` apruebe tus cambios antes de enviar.
+## Reportar Problemas
+- Usa las Issues en GitHub para reportar bugs o sugerir mejoras.
+- Incluye detalles como pasos para reproducir y logs de error.
+
+## Licencia
+- Este proyecto está bajo la licencia MIT. Consulta `LICENSE` (si existe) o crea uno si es necesario.
+
+## Agradecimientos
+¡Tu contribución hace que Nevada-English sea mejor! Si tienes dudas, consulta `docs/faq.md` o contacta al equipo via Issues.
