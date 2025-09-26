@@ -48,3 +48,8 @@
 3. **Espera comentarios**:
    - Alguien revisará tu trabajo y te dirá si necesita ajustes.
    - Si te piden cambios, hazlos y sube de nuevo.
+## Consejos para Hacerlo Bien
+- **Prueba tu trabajo**: Asegúrate de que todo funcione antes de enviar. Usa `pytest tests/` para Python o `npx hardhat test` para blockchain.
+- **Actualiza la guía**: Si cambias algo importante (como el backend o el juego), añade notas en `docs/` (por ejemplo, `architecture.md`).
+- **Escribe código limpio**: Sigue el estilo de los archivos que ya tienes (usa 4 espacios para Python, usa Solidity 0.8.0).
+- **Revisa el automático**: Asegúrate de que `.github/workflows/ci.yml` apruebe tus cambios antes de enviar.
