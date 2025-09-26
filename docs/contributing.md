@@ -32,4 +32,19 @@
      git add .
      git commit -m "Añadí una nueva función [escribe qué cambiaste]"
      ```
-     
+     ## Enviar tus Cambios
+1. **Sube lo que cambiaste**:
+   - Usa este comando para enviar tus cambios:
+     ```bash
+     git push origin feature/nueva-prueba
+     ```
+   - Esto sube tu trabajo a GitHub.
+
+2. **Pide que revisen tu trabajo**:
+   - Ve a GitHub en tu celular o computadora.
+   - Crea un "Pull Request" (PR) desde tu rama (`feature/nueva-prueba`) a `main`.
+   - Escribe un mensaje corto diciendo qué cambiaste (e.g., "Añadí una nueva prueba").
+
+3. **Espera comentarios**:
+   - Alguien revisará tu trabajo y te dirá si necesita ajustes.
+   - Si te piden cambios, hazlos y sube de nuevo.
