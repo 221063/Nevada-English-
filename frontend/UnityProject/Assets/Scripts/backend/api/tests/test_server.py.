@@ -1,0 +1,26 @@
+import unittest
+import json
+from backend.api.server import app
+
+class TestServer(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+
+    def test_analyze_emotion_post(self):
+        response = self.app.post('/analyze_emotion',
+                                data={'tone': 'excited', 'context': 'combat'},
+                                content_type='application/x-www-form-urlencoded')
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(data['success'])
+        self.assertEqual(data['feedback'], 'Analizado: excited en combat')
+
+    def test_analyze_emotion_get(self):
+        response = self.app.get('/analyze_emotion')
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(data['error'], 'Método no permitido')
+
+if __name__ == '__main__':
+    unittest.main()
