@@ -1,0 +1,23 @@
+from flask import Flask, request, jsonify
+import json
+
+app = Flask(__name__)
+
+@app.route('/analyze_emotion', methods=['GET', 'POST'])
+def analyze_emotion():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        tone = data.get('tone', 'neutral')
+        context = data.get('context', 'default')
+
+        # Simulación de análisis (reemplazar con modelo de IA real)
+        response = {
+            'feedback': f"Analizado: {tone} en {context}",
+            'success': True
+        }
+        return jsonify(response)
+
+    return jsonify({'error': 'Método no permitido'}), 405
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
