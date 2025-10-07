@@ -8,11 +8,12 @@ public class NarrativeTrigger : MonoBehaviour
     public TeamChallengeManager teamChallengeManager; // Referencia al TeamChallengeManager
     public LearningAnalytics learningAnalytics; // Referencia al LearningAnalytics
     public UIManager uiManager;            // Referencia al UIManager
+    public QuizGenerator quizGenerator;    // Referencia al QuizGenerator (ya existente)
 
     void Start()
     {
         if (storyteller == null || lessonManager == null || progressTracker == null || 
-            teamChallengeManager == null || learningAnalytics == null || uiManager == null)
+            teamChallengeManager == null || learningAnalytics == null || uiManager == null || quizGenerator == null)
         {
             Debug.LogError("Asigna todas las referencias en el Inspector.");
         }
@@ -84,6 +85,33 @@ public class NarrativeTrigger : MonoBehaviour
                 break;
             case "Lección 3: Familia":
                 narrativeEvent = "¡Acertaste un término familiar en el quiz! La familia te agradece.";
+                break;
+        }
+        if (!string.IsNullOrEmpty(narrativeEvent))
+        {
+            TriggerNarrative(narrativeEvent);
+        }
+    }
+
+    public void TriggerOnVocabularySuccess(string lessonName, bool isPronunciationSuccess)
+    {
+        string narrativeEvent = "";
+        switch (lessonName)
+        {
+            case "Lección 1: Saludos":
+                narrativeEvent = isPronunciationSuccess ? 
+                    "¡Tu pronunciación de un saludo fue impecable! El personaje te felicita." : 
+                    "¡Practicaste un saludo con éxito! El personaje te anima.";
+                break;
+            case "Lección 2: Números":
+                narrativeEvent = isPronunciationSuccess ? 
+                    "¡Pronunciaste un número perfectamente! El mercader te recompensa." : 
+                    "¡Repetiste un número con éxito! El mercader te guiña un ojo.";
+                break;
+            case "Lección 3: Familia":
+                narrativeEvent = isPronunciationSuccess ? 
+                    "¡Tu pronunciación familiar fue genial! La familia te abraza." : 
+                    "¡Aprendiste un término familiar! La familia te saluda.";
                 break;
         }
         if (!string.IsNullOrEmpty(narrativeEvent))
