@@ -68,6 +68,7 @@ public class LessonManager : MonoBehaviour
         if (currentLevel < 89) // Máximo 89 (29 en el nivel Avanzado)
         {
             progressManager.playerStats.level++; // Avanza al siguiente nivel o lección
+            progressManager.playerStats.score = 0; // Reinicia el score para la nueva lección
             LoadCurrentLesson();
             if (narrativeTrigger != null)
             {
