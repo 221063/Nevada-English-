@@ -27,70 +27,48 @@ public class NarrativeTrigger : MonoBehaviour
 
     private void CheckNarrativeTriggers()
     {
-        string currentLesson = lessonManager.GetCurrentLessonName(); // Asume este método
-        int wordsLearned = progressTracker.wordsLearned;
+        string currentLesson = lessonManager.GetCurrentLesson(); // Usa LessonManager
+        int lessonProgress = progressTracker.wordsLearned; // Temporal hasta integrar progreso por lección
         int teamScore = teamChallengeManager != null ? teamChallengeManager.teamScore : 0;
         float playTime = progressTracker.playTime;
         int wordsFailed = learningAnalytics.wordsFailed;
 
-        // Condiciones por lección
+        // Determinar el nivel actual
+        int currentLevelIndex = progressManager.playerStats.level / 30;
+
+        // Condiciones por lección basadas en progreso
         switch (currentLesson)
         {
-            case "Lección 1: Saludos":
-                if (wordsLearned >= 5)
+            case string lesson when lesson.StartsWith("Básico"):
+                if (lessonProgress >= 5 && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
                 {
-                    TriggerNarrative("¡Has dominado los saludos! Un personaje te saluda en la historia.");
-                }
-                break;
-
-            case "Lección 2: Números":
-                if (wordsLearned >= 10)
-                {
-                    TriggerNarrative("¡Contaste hasta 10! Un mercader te ofrece un trato narrativo.");
+                    TriggerNarrative($"¡Completaste {lesson}! Un amigo te guía al siguiente paso.");
                 }
                 else if (wordsFailed >= 3)
                 {
-                    TriggerNarrative("Has fallado 3 números... Un guía te ayuda a practicar.");
+                    TriggerNarrative($"Fallaste 3 veces en {lesson}... Un guía te ayuda.");
                 }
                 break;
 
-            case "Lección 3: Familia":
-                if (teamScore >= 50)
+            case string lesson when lesson.StartsWith("Intermedio"):
+                if (lessonProgress >= 10 && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
                 {
-                    TriggerNarrative("¡Tu equipo ayudó con la familia! Un nuevo miembro se une a la narrativa.");
+                    TriggerNarrative($"¡Dominaste {lesson}! Un mercader te recompensa.");
+                }
+                else if (wordsFailed >= 5)
+                {
+                    TriggerNarrative($"Fallaste 5 veces en {lesson}... Un experto te apoya.");
                 }
                 break;
 
-            case "Lección 4: Comida":
-                if (wordsLearned >= 15)
+            case string lesson when lesson.StartsWith("Avanzado"):
+                if (teamScore >= 50 && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
                 {
-                    TriggerNarrative("¡Aprendiste 15 palabras de comida! Un chef te invita a una fiesta narrativa.");
+                    TriggerNarrative($"¡Tu equipo brilló en {lesson}! Un héroe te elogia.");
                 }
-                else if (wordsFailed >= 4)
+                else if (wordsFailed >= 7)
                 {
-                    TriggerNarrative("Fallaste 4 palabras de comida... El chef te da una receta fácil.");
-                }
-                break;
-
-            case "Lección 5: Colores":
-                if (wordsLearned >= 8)
-                {
-                    TriggerNarrative("¡Dominaste los colores! Un artista pinta tu historia.");
-                }
-                else if (playTime >= 1800) // 30 minutos
-                {
-                    TriggerNarrative("¡Llevas 30 minutos con colores! El artista te da un consejo.");
-                }
-                break;
-
-            case "Lección 6: Verbos":
-                if (teamScore >= 150)
-                {
-                    TriggerNarrative("¡Tu equipo llegó a 150 puntos con verbos! Un héroe narra tu hazaña.");
-                }
-                else if (wordsFailed >= 6)
-                {
-                    TriggerNarrative("Fallaste 6 verbos... Un maestro te enseña un truco narrativo.");
+                    TriggerNarrative($"Fallaste 7 veces en {lesson}... Un maestro te enseña.");
                 }
                 break;
         }
@@ -102,32 +80,57 @@ public class NarrativeTrigger : MonoBehaviour
         }
     }
 
+    public void OnLessonCompleted(string lessonName)
+    {
+        string narrativeEvent = "";
+        if (lessonName == "Completado")
+        {
+            narrativeEvent = "¡Has terminado todos los niveles! La historia te corona como maestro.";
+        }
+        else
+        {
+            int lessonNumber = int.Parse(lessonName.Split(' ')[1]);
+            string level = lessonName.Split(' ')[0];
+            if (lessonNumber % 10 == 0 && lessonNumber <= 30) // Fin de cada decena en Básico
+            {
+                narrativeEvent = $"¡Completaste {lessonName}! El amigo te nombra avanzando a {level} {lessonNumber + 1}.";
+            }
+            else if (lessonNumber % 10 == 0 && lessonNumber <= 60) // Fin de cada decena en Intermedio
+            {
+                narrativeEvent = $"¡Masterizaste {lessonName}! El mercader te da un regalo.";
+            }
+            else if (lessonNumber % 10 == 0 && lessonNumber <= 90) // Fin de cada decena en Avanzado
+            {
+                narrativeEvent = $"¡Conquistaste {lessonName}! El héroe te honra.";
+            }
+        }
+        if (!string.IsNullOrEmpty(narrativeEvent))
+        {
+            TriggerNarrative(narrativeEvent);
+        }
+    }
+
     public void TriggerOnQuizSuccess(string lessonName, QuizGenerator.QuestionType questionType)
     {
         string narrativeEvent = "";
-        switch (lessonName)
+        if (lessonName.StartsWith("Básico"))
         {
-            case "Lección 1: Saludos":
-                narrativeEvent = "¡Acertaste un saludo en el quiz! El personaje te da una bienvenida especial.";
-                break;
-            case "Lección 2: Números":
-                if (questionType == QuizGenerator.QuestionType.MultipleChoice)
-                    narrativeEvent = "¡Acertaste un número en el quiz! El mercader te confía un secreto.";
-                else if (questionType == QuizGenerator.QuestionType.Audio)
-                    narrativeEvent = "¡Tu pronunciación fue perfecta! El mercader te aplaude.";
-                break;
-            case "Lección 3: Familia":
-                narrativeEvent = "¡Acertaste un término familiar en el quiz! La familia te agradece.";
-                break;
-            case "Lección 4: Comida":
-                narrativeEvent = "¡Acertaste una palabra de comida en el quiz! El chef te ofrece un plato especial.";
-                break;
-            case "Lección 5: Colores":
-                narrativeEvent = "¡Acertaste un color en el quiz! El artista te da un pincel narrativo.";
-                break;
-            case "Lección 6: Verbos":
-                narrativeEvent = "¡Acertaste un verbo en el quiz! El héroe te elogia en la historia.";
-                break;
+            narrativeEvent = $"¡Acertaste en {lessonName}! El amigo te anima.";
+        }
+        else if (lessonName.StartsWith("Intermedio"))
+        {
+            if (questionType == QuizGenerator.QuestionType.MultipleChoice)
+                narrativeEvent = $"¡Acertaste en {lessonName}! El mercader te confía un secreto.";
+            else if (questionType == QuizGenerator.QuestionType.Audio)
+                narrativeEvent = $"¡Pronunciación perfecta en {lessonName}! El mercader te aplaude.";
+        }
+        else if (lessonName.StartsWith("Avanzado"))
+        {
+            narrativeEvent = $"¡Acertaste en {lessonName}! El héroe te elogia.";
+        }
+        else if (lessonName == "Completado")
+        {
+            narrativeEvent = "¡Sigue brillando tras completar todo! La historia te aplaude.";
         }
         if (!string.IsNullOrEmpty(narrativeEvent))
         {
@@ -138,38 +141,29 @@ public class NarrativeTrigger : MonoBehaviour
     public void TriggerOnVocabularySuccess(string lessonName, bool isPronunciationSuccess)
     {
         string narrativeEvent = "";
-        switch (lessonName)
+        if (lessonName.StartsWith("Básico"))
         {
-            case "Lección 1: Saludos":
-                narrativeEvent = isPronunciationSuccess ? 
-                    "¡Tu pronunciación de un saludo fue impecable! El personaje te felicita." : 
-                    "¡Practicaste un saludo con éxito! El personaje te anima.";
-                break;
-            case "Lección 2: Números":
-                narrativeEvent = isPronunciationSuccess ? 
-                    "¡Pronunciaste un número perfectamente! El mercader te recompensa." : 
-                    "¡Repetiste un número con éxito! El mercader te guiña un ojo.";
-                break;
-            case "Lección 3: Familia":
-                narrativeEvent = isPronunciationSuccess ? 
-                    "¡Tu pronunciación familiar fue genial! La familia te abraza." : 
-                    "¡Aprendiste un término familiar! La familia te saluda.";
-                break;
-            case "Lección 4: Comida":
-                narrativeEvent = isPronunciationSuccess ? 
-                    "¡Pronunciaste una palabra de comida perfectamente! El chef te aplaude." : 
-                    "¡Practicaste comida con éxito! El chef te da una receta.";
-                break;
-            case "Lección 5: Colores":
-                narrativeEvent = isPronunciationSuccess ? 
-                    "¡Tu pronunciación de un color fue perfecta! El artista te pinta." : 
-                    "¡Aprendiste un color con éxito! El artista te guiña.";
-                break;
-            case "Lección 6: Verbos":
-                narrativeEvent = isPronunciationSuccess ? 
-                    "¡Pronunciaste un verbo impecable! El héroe te nombra aprendiz." : 
-                    "¡Practicaste un verbo con éxito! El héroe te anima.";
-                break;
+            narrativeEvent = isPronunciationSuccess ? 
+                $"¡Pronunciación impecable en {lessonName}! El amigo te felicita." : 
+                $"¡Practicaste bien en {lessonName}! El amigo te anima.";
+        }
+        else if (lessonName.StartsWith("Intermedio"))
+        {
+            narrativeEvent = isPronunciationSuccess ? 
+                $"¡Pronunciaste perfecto en {lessonName}! El mercader te recompensa." : 
+                $"¡Repetiste bien en {lessonName}! El mercader te guiña.";
+        }
+        else if (lessonName.StartsWith("Avanzado"))
+        {
+            narrativeEvent = isPronunciationSuccess ? 
+                $"¡Pronunciación genial en {lessonName}! El héroe te abraza." : 
+                $"¡Aprendiste bien en {lessonName}! El héroe te saluda.";
+        }
+        else if (lessonName == "Completado")
+        {
+            narrativeEvent = isPronunciationSuccess ? 
+                "¡Pronunciación maestra tras completar! La historia te ovaciona." : 
+                "¡Sigue practicando tras completar! La historia te anima.";
         }
         if (!string.IsNullOrEmpty(narrativeEvent))
         {
