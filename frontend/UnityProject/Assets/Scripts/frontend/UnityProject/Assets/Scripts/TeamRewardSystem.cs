@@ -5,6 +5,23 @@ public class TeamRewardSystem : MonoBehaviour
     public TeamChallengeManager teamChallengeManager; // Referencia al TeamChallengeManager
     public PlayerStats playerStats;                  // Referencia a PlayerStats
     public UIManager uiManager;                      // Referencia al UIManager
+
+    [System.Serializable] // Para mostrar en el Inspector
+    public class RewardCondition
+    {
+        public int scoreThreshold; // Umbral de puntuación
+        public int rewardPoints;   // Puntos a otorgar
+        public string rewardMessage; // Mensaje de recompensa
+        public bool isSpecial;     // Indica si es una recompensa especial
+    }
+
+    [SerializeField] // Permite editar en el Inspector
+    private RewardCondition[] rewardConditions = new RewardCondition[]
+    {
+        new RewardCondition { scoreThreshold = 100, rewardPoints = 50, rewardMessage = "¡Equipo subió a nivel 2! +50 puntos por miembro.", isSpecial = false },
+        new RewardCondition { scoreThreshold = 200, rewardPoints = 0, rewardMessage = "¡Desbloqueado: Recompensa especial para el equipo!", isSpecial = true }
+    };
+
     private int teamLevel;                           // Nivel del equipo
     private bool hasSpecialReward;                   // Estado de recompensa especial
 
@@ -22,18 +39,22 @@ public class TeamRewardSystem : MonoBehaviour
     public void CheckRewards()
     {
         int teamScore = teamChallengeManager.teamScore;
-        if (teamScore >= 100 && teamLevel < 5)
+        foreach (RewardCondition condition in rewardConditions)
         {
-            teamLevel++;
-            playerStats.AddScore(50); // Recompensa para todos
-            uiManager.UpdateUI("¡Equipo subió a nivel " + teamLevel + "! +50 puntos por miembro.");
+            if (teamScore >= condition.scoreThreshold)
+            {
+                ApplyReward(condition);
+            }
         }
-        if (teamScore >= 200 && !hasSpecialReward)
-        {
-            hasSpecialReward = true;
-            uiManager.UpdateUI("¡Desbloqueado: Recompensa especial para el equipo!");
-            // Lógica futura para desbloqueo (e.g., nuevo desafío)
-        }
+    }
+
+    private void ApplyReward(RewardCondition condition)
+    {
+        if (condition.isSpecial && hasSpecialReward) return; // Evita recompensas especiales duplicadas
+        if (condition.isSpecial) hasSpecialReward = true;
+        if (condition.rewardPoints > 0) playerStats.AddScore(condition.rewardPoints);
+        uiManager.UpdateUI(condition.rewardMessage);
+        if (!condition.isSpecial && teamLevel < 5) teamLevel++; // Incrementa nivel solo para no especiales
     }
 
     public void OnChallengeCompleted(bool success)
