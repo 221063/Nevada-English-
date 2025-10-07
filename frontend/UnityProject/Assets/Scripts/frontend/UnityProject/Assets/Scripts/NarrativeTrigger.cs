@@ -8,7 +8,7 @@ public class NarrativeTrigger : MonoBehaviour
     public TeamChallengeManager teamChallengeManager; // Referencia al TeamChallengeManager
     public LearningAnalytics learningAnalytics; // Referencia al LearningAnalytics
     public UIManager uiManager;            // Referencia al UIManager
-    public QuizGenerator quizGenerator;    // Referencia al QuizGenerator (ya existente)
+    public QuizGenerator quizGenerator;    // Referencia al QuizGenerator
 
     void Start()
     {
@@ -60,6 +60,39 @@ public class NarrativeTrigger : MonoBehaviour
                     TriggerNarrative("¡Tu equipo ayudó con la familia! Un nuevo miembro se une a la narrativa.");
                 }
                 break;
+
+            case "Lección 4: Comida":
+                if (wordsLearned >= 15)
+                {
+                    TriggerNarrative("¡Aprendiste 15 palabras de comida! Un chef te invita a una fiesta narrativa.");
+                }
+                else if (wordsFailed >= 4)
+                {
+                    TriggerNarrative("Fallaste 4 palabras de comida... El chef te da una receta fácil.");
+                }
+                break;
+
+            case "Lección 5: Colores":
+                if (wordsLearned >= 8)
+                {
+                    TriggerNarrative("¡Dominaste los colores! Un artista pinta tu historia.");
+                }
+                else if (playTime >= 1800) // 30 minutos
+                {
+                    TriggerNarrative("¡Llevas 30 minutos con colores! El artista te da un consejo.");
+                }
+                break;
+
+            case "Lección 6: Verbos":
+                if (teamScore >= 150)
+                {
+                    TriggerNarrative("¡Tu equipo llegó a 150 puntos con verbos! Un héroe narra tu hazaña.");
+                }
+                else if (wordsFailed >= 6)
+                {
+                    TriggerNarrative("Fallaste 6 verbos... Un maestro te enseña un truco narrativo.");
+                }
+                break;
         }
 
         // Condiciones generales
@@ -85,6 +118,15 @@ public class NarrativeTrigger : MonoBehaviour
                 break;
             case "Lección 3: Familia":
                 narrativeEvent = "¡Acertaste un término familiar en el quiz! La familia te agradece.";
+                break;
+            case "Lección 4: Comida":
+                narrativeEvent = "¡Acertaste una palabra de comida en el quiz! El chef te ofrece un plato especial.";
+                break;
+            case "Lección 5: Colores":
+                narrativeEvent = "¡Acertaste un color en el quiz! El artista te da un pincel narrativo.";
+                break;
+            case "Lección 6: Verbos":
+                narrativeEvent = "¡Acertaste un verbo en el quiz! El héroe te elogia en la historia.";
                 break;
         }
         if (!string.IsNullOrEmpty(narrativeEvent))
@@ -112,6 +154,21 @@ public class NarrativeTrigger : MonoBehaviour
                 narrativeEvent = isPronunciationSuccess ? 
                     "¡Tu pronunciación familiar fue genial! La familia te abraza." : 
                     "¡Aprendiste un término familiar! La familia te saluda.";
+                break;
+            case "Lección 4: Comida":
+                narrativeEvent = isPronunciationSuccess ? 
+                    "¡Pronunciaste una palabra de comida perfectamente! El chef te aplaude." : 
+                    "¡Practicaste comida con éxito! El chef te da una receta.";
+                break;
+            case "Lección 5: Colores":
+                narrativeEvent = isPronunciationSuccess ? 
+                    "¡Tu pronunciación de un color fue perfecta! El artista te pinta." : 
+                    "¡Aprendiste un color con éxito! El artista te guiña.";
+                break;
+            case "Lección 6: Verbos":
+                narrativeEvent = isPronunciationSuccess ? 
+                    "¡Pronunciaste un verbo impecable! El héroe te nombra aprendiz." : 
+                    "¡Practicaste un verbo con éxito! El héroe te anima.";
                 break;
         }
         if (!string.IsNullOrEmpty(narrativeEvent))
