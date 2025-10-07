@@ -3,6 +3,7 @@ using UnityEngine;
 public class NarrativeTrigger : MonoBehaviour
 {
     public Storyteller storyteller;        // Referencia al Storyteller
+    public LessonManager lessonManager;    // Referencia al LessonManager
     public ProgressTracker progressTracker; // Referencia al ProgressTracker
     public TeamChallengeManager teamChallengeManager; // Referencia al TeamChallengeManager
     public LearningAnalytics learningAnalytics; // Referencia al LearningAnalytics
@@ -10,10 +11,10 @@ public class NarrativeTrigger : MonoBehaviour
 
     void Start()
     {
-        if (storyteller == null || progressTracker == null || teamChallengeManager == null ||
-            learningAnalytics == null || uiManager == null)
+        if (storyteller == null || lessonManager == null || progressTracker == null || 
+            teamChallengeManager == null || learningAnalytics == null || uiManager == null)
         {
-            Debug.LogError("Asigna Storyteller, ProgressTracker, TeamChallengeManager, LearningAnalytics y UIManager en el Inspector.");
+            Debug.LogError("Asigna todas las referencias en el Inspector.");
         }
         CheckNarrativeTriggers();
     }
@@ -25,31 +26,47 @@ public class NarrativeTrigger : MonoBehaviour
 
     private void CheckNarrativeTriggers()
     {
+        string currentLesson = lessonManager.GetCurrentLessonName(); // Asume este método
         int wordsLearned = progressTracker.wordsLearned;
         int teamScore = teamChallengeManager != null ? teamChallengeManager.teamScore : 0;
         float playTime = progressTracker.playTime;
         int wordsFailed = learningAnalytics.wordsFailed;
 
-        // Condiciones narrativas
-        if (wordsLearned >= 10 && wordsLearned < 20)
+        // Condiciones por lección
+        switch (currentLesson)
         {
-            TriggerNarrative("¡Has aprendido 10 palabras! La historia avanza a un nuevo capítulo.");
+            case "Lección 1: Saludos":
+                if (wordsLearned >= 5) // 5 palabras aprendidas en esta lección
+                {
+                    TriggerNarrative("¡Has dominado los saludos! Un personaje te saluda en la historia.");
+                }
+                break;
+
+            case "Lección 2: Números":
+                if (wordsLearned >= 10) // 10 palabras aprendidas
+                {
+                    TriggerNarrative("¡Contaste hasta 10! Un mercader te ofrece un trato narrativo.");
+                }
+                else if (wordsFailed >= 3)
+                {
+                    TriggerNarrative("Has fallado 3 números... Un guía te ayuda a practicar.");
+                }
+                break;
+
+            case "Lección 3: Familia":
+                if (teamScore >= 50) // Progreso de equipo
+                {
+                    TriggerNarrative("¡Tu equipo ayudó con la familia! Un nuevo miembro se une a la narrativa.");
+                }
+                break;
+
+            // Añade más casos según las lecciones
         }
-        else if (wordsLearned >= 20)
-        {
-            TriggerNarrative("¡Maestro del inglés! Nueva misión desbloqueada en tu viaje.");
-        }
-        else if (teamScore >= 100)
-        {
-            TriggerNarrative("¡Tu equipo ha alcanzado 100 puntos! Un aliado se une a la narrativa.");
-        }
-        else if (playTime >= 3600) // 1 hora en segundos
+
+        // Condiciones generales (opcional, para complementar)
+        if (playTime >= 3600) // 1 hora
         {
             TriggerNarrative("¡Has jugado 1 hora! La historia celebra tu dedicación.");
-        }
-        else if (wordsFailed >= 5)
-        {
-            TriggerNarrative("Has fallado 5 veces... Un mentor aparece para guiarte.");
         }
     }
 
