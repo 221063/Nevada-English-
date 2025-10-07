@@ -4,6 +4,7 @@ public class NarrativeTrigger : MonoBehaviour
 {
     public Storyteller storyteller;        // Referencia al Storyteller
     public LessonManager lessonManager;    // Referencia al LessonManager
+    public ProgressManager progressManager; // Nueva referencia
     public ProgressTracker progressTracker; // Referencia al ProgressTracker
     public TeamChallengeManager teamChallengeManager; // Referencia al TeamChallengeManager
     public LearningAnalytics learningAnalytics; // Referencia al LearningAnalytics
@@ -12,7 +13,7 @@ public class NarrativeTrigger : MonoBehaviour
 
     void Start()
     {
-        if (storyteller == null || lessonManager == null || progressTracker == null || 
+        if (storyteller == null || lessonManager == null || progressManager == null || progressTracker == null || 
             teamChallengeManager == null || learningAnalytics == null || uiManager == null || quizGenerator == null)
         {
             Debug.LogError("Asigna todas las referencias en el Inspector.");
@@ -28,21 +29,24 @@ public class NarrativeTrigger : MonoBehaviour
     private void CheckNarrativeTriggers()
     {
         string currentLesson = lessonManager.GetCurrentLesson(); // Usa LessonManager
-        int lessonProgress = progressTracker.wordsLearned; // Temporal hasta integrar progreso por lección
+        int lessonProgress = progressManager.playerStats.score; // Progreso por lección basado en score
         int teamScore = teamChallengeManager != null ? teamChallengeManager.teamScore : 0;
         float playTime = progressTracker.playTime;
         int wordsFailed = learningAnalytics.wordsFailed;
 
         // Determinar el nivel actual
         int currentLevelIndex = progressManager.playerStats.level / 30;
+        int requiredProgress = 20; // Umbral por lección (ajustable, e.g., 20 puntos por lección)
 
         // Condiciones por lección basadas en progreso
         switch (currentLesson)
         {
             case string lesson when lesson.StartsWith("Básico"):
-                if (lessonProgress >= 5 && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
+                if (lessonProgress >= requiredProgress && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
                 {
                     TriggerNarrative($"¡Completaste {lesson}! Un amigo te guía al siguiente paso.");
+                    // Opcional: Llamar AdvanceToNextLesson si se completa la lección
+                    // lessonManager.AdvanceToNextLesson();
                 }
                 else if (wordsFailed >= 3)
                 {
@@ -51,9 +55,10 @@ public class NarrativeTrigger : MonoBehaviour
                 break;
 
             case string lesson when lesson.StartsWith("Intermedio"):
-                if (lessonProgress >= 10 && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
+                if (lessonProgress >= requiredProgress && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
                 {
                     TriggerNarrative($"¡Dominaste {lesson}! Un mercader te recompensa.");
+                    // Opcional: lessonManager.AdvanceToNextLesson();
                 }
                 else if (wordsFailed >= 5)
                 {
@@ -65,6 +70,7 @@ public class NarrativeTrigger : MonoBehaviour
                 if (teamScore >= 50 && int.Parse(lesson.Split(' ')[1]) % 10 == 0) // Cada 10 lecciones
                 {
                     TriggerNarrative($"¡Tu equipo brilló en {lesson}! Un héroe te elogia.");
+                    // Opcional: lessonManager.AdvanceToNextLesson();
                 }
                 else if (wordsFailed >= 7)
                 {
@@ -116,17 +122,29 @@ public class NarrativeTrigger : MonoBehaviour
         if (lessonName.StartsWith("Básico"))
         {
             narrativeEvent = $"¡Acertaste en {lessonName}! El amigo te anima.";
+            progressManager.playerStats.score += 5; // Aumenta score por éxito
+            progressManager.CheckProgress(); // Verifica si se desbloquea un nivel
         }
         else if (lessonName.StartsWith("Intermedio"))
         {
             if (questionType == QuizGenerator.QuestionType.MultipleChoice)
+            {
                 narrativeEvent = $"¡Acertaste en {lessonName}! El mercader te confía un secreto.";
+                progressManager.playerStats.score += 5;
+                progressManager.CheckProgress();
+            }
             else if (questionType == QuizGenerator.QuestionType.Audio)
+            {
                 narrativeEvent = $"¡Pronunciación perfecta en {lessonName}! El mercader te aplaude.";
+                progressManager.playerStats.score += 5;
+                progressManager.CheckProgress();
+            }
         }
         else if (lessonName.StartsWith("Avanzado"))
         {
             narrativeEvent = $"¡Acertaste en {lessonName}! El héroe te elogia.";
+            progressManager.playerStats.score += 5;
+            progressManager.CheckProgress();
         }
         else if (lessonName == "Completado")
         {
@@ -146,18 +164,24 @@ public class NarrativeTrigger : MonoBehaviour
             narrativeEvent = isPronunciationSuccess ? 
                 $"¡Pronunciación impecable en {lessonName}! El amigo te felicita." : 
                 $"¡Practicaste bien en {lessonName}! El amigo te anima.";
+            progressManager.playerStats.score += isPronunciationSuccess ? 5 : 3; // Más puntos por pronunciación
+            progressManager.CheckProgress();
         }
         else if (lessonName.StartsWith("Intermedio"))
         {
             narrativeEvent = isPronunciationSuccess ? 
                 $"¡Pronunciaste perfecto en {lessonName}! El mercader te recompensa." : 
                 $"¡Repetiste bien en {lessonName}! El mercader te guiña.";
+            progressManager.playerStats.score += isPronunciationSuccess ? 5 : 3;
+            progressManager.CheckProgress();
         }
         else if (lessonName.StartsWith("Avanzado"))
         {
             narrativeEvent = isPronunciationSuccess ? 
                 $"¡Pronunciación genial en {lessonName}! El héroe te abraza." : 
                 $"¡Aprendiste bien en {lessonName}! El héroe te saluda.";
+            progressManager.playerStats.score += isPronunciationSuccess ? 5 : 3;
+            progressManager.CheckProgress();
         }
         else if (lessonName == "Completado")
         {
