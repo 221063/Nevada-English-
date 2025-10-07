@@ -5,6 +5,8 @@ public class QuizGenerator : MonoBehaviour
     public LessonManager lessonManager;    // Referencia al LessonManager
     public VocabularyTrainer vocabularyTrainer; // Referencia al VocabularyTrainer
     public UIManager uiManager;            // Referencia al UIManager
+    public NarrativeTrigger narrativeTrigger; // Nueva referencia
+
     private string currentQuestion;        // Pregunta actual
     private string correctAnswer;          // Respuesta correcta
     private string[] options = new string[4]; // Opciones de respuesta (para tipo múltiple)
@@ -13,20 +15,19 @@ public class QuizGenerator : MonoBehaviour
 
     void Start()
     {
-        if (lessonManager == null || vocabularyTrainer == null || uiManager == null)
+        if (lessonManager == null || vocabularyTrainer == null || uiManager == null || narrativeTrigger == null)
         {
-            Debug.LogError("Asigna LessonManager, VocabularyTrainer y UIManager en el Inspector.");
+            Debug.LogError("Asigna todas las referencias en el Inspector.");
         }
         GenerateQuiz();
     }
 
     public void GenerateQuiz()
     {
-        string currentLesson = lessonManager.GetCurrentLesson();
+        string currentLesson = lessonManager.GetCurrentLessonName();
         string targetWord = vocabularyTrainer.GetRandomVocabulary();
         correctAnswer = targetWord;
 
-        // Selecciona un tipo de pregunta aleatoriamente
         currentType = (QuestionType)Random.Range(0, System.Enum.GetValues(typeof(QuestionType)).Length);
         switch (currentType)
         {
@@ -64,7 +65,6 @@ public class QuizGenerator : MonoBehaviour
 
     private void ShuffleOptions()
     {
-        // Simulación simple de mezcla
         for (int i = 0; i < options.Length; i++)
         {
             int r = Random.Range(i, options.Length);
@@ -91,6 +91,7 @@ public class QuizGenerator : MonoBehaviour
     public void CheckAnswer(string selectedOption)
     {
         bool isCorrect = false;
+        string currentLesson = lessonManager.GetCurrentLessonName();
         switch (currentType)
         {
             case QuestionType.MultipleChoice:
@@ -103,7 +104,6 @@ public class QuizGenerator : MonoBehaviour
                 break;
 
             case QuestionType.Audio:
-                // Placeholder: Asume que VocabularyTrainer verifica el audio
                 AudioClip clip = Microphone.Start(null, false, 5, 44100); // Graba 5 segundos
                 isCorrect = vocabularyTrainer.VerifyPronunciation(clip, correctAnswer);
                 Microphone.End(null); // Detiene la grabación
@@ -113,7 +113,11 @@ public class QuizGenerator : MonoBehaviour
         if (isCorrect)
         {
             uiManager.UpdateUI("¡Correcto! +10 puntos.");
-            vocabularyTrainer.playerStats.AddScore(10); // Asume que PlayerStats está en VocabularyTrainer
+            vocabularyTrainer.playerStats.AddScore(10);
+            if (narrativeTrigger != null)
+            {
+                narrativeTrigger.TriggerOnQuizSuccess(currentLesson, currentType); // Llama al evento narrativo
+            }
         }
         else
         {
