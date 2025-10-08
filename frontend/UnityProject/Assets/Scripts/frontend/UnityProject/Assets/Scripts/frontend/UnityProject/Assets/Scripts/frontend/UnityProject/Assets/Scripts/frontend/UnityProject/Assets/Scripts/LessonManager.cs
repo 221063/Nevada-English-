@@ -18,8 +18,7 @@ public class LessonManager : MonoBehaviour
 
     private void InitializeLessons()
     { 
-    private void InitializeLessons()
-{
+    
     // Tabla de contenido para Nevada-English
     // | Nivel      | Lección | Tema/Enfoque                                      |
     // |------------|---------|---------------------------------------------------|
@@ -126,20 +125,7 @@ public class LessonManager : MonoBehaviour
         lessons[2, i] = advancedLessons[i];       // Nivel Avanzado
     }
 }
-        // Inicializar lecciones para cada nivel
-        string[] basicLessons = GenerateLessons("Básico", 30);
-        string[] intermediateLessons = GenerateLessons("Intermedio", 30);
-        string[] advancedLessons = GenerateLessons("Avanzado", 30);
-
-        for (int i = 0; i < 30; i++)
-        {
-            lessons[0, i] = basicLessons[i];         // Nivel Básico
-            lessons[1, i] = intermediateLessons[i];   // Nivel Intermedio
-            lessons[2, i] = advancedLessons[i];       // Nivel Avanzado
-        }
-    }
-
-    private string[] GenerateLessons(string levelPrefix, int count)
+  private string[] GenerateLessons(string levelPrefix, int count)
     {
         string[] lessonArray = new string[count];
         for (int i = 0; i < count; i++)
