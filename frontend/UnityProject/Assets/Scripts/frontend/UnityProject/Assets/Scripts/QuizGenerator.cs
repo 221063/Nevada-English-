@@ -117,7 +117,7 @@ public class QuizGenerator : MonoBehaviour
 // | **Avanzado** | 28      | Redacción formal                                  |
 // | **Avanzado** | 29      | Revisión: Temas avanzados                         |
 // | **Avanzado** | 30      | Proyecto: Presentación profesional                |
-        string currentLesson = lessonManager.GetCurrentLessonName();
+        string currentLesson = lessonManager.GetCurrentLesson();
         string targetWord = vocabularyTrainer.GetRandomVocabulary();
         correctAnswer = targetWord;
 
@@ -184,7 +184,7 @@ public class QuizGenerator : MonoBehaviour
     public void CheckAnswer(string selectedOption)
     {
         bool isCorrect = false;
-        string currentLesson = lessonManager.GetCurrentLessonName();
+        string currentLesson = lessonManager.GetCurrentLesson();
         switch (currentType)
         {
             case QuestionType.MultipleChoice:
