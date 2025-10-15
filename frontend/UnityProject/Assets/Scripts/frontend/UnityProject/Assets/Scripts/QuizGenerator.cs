@@ -1,28 +1,4 @@
-using UnityEngine;
-
-public class QuizGenerator : MonoBehaviour
-{
-    public LessonManager lessonManager;    // Referencia al LessonManager
-    public VocabularyTrainer vocabularyTrainer; // Referencia al VocabularyTrainer
-    public UIManager uiManager;            // Referencia al UIManager
-    public NarrativeTrigger narrativeTrigger; // Nueva referencia
-
-    private string currentQuestion;        // Pregunta actual
-    private string correctAnswer;          // Respuesta correcta
-    private string[] options = new string[4]; // Opciones de respuesta (para tipo múltiple)
-    private enum QuestionType { MultipleChoice, Written, Audio, ImageMatch } // Tipos de preguntas
-    private QuestionType currentType;      // Tipo de pregunta actual
-
-    void Start()
-    {
-        if (lessonManager == null || vocabularyTrainer == null || uiManager == null || narrativeTrigger == null)
-        {
-            Debug.LogError("Asigna todas las referencias en el Inspector.");
-        }
-        GenerateQuiz();
-    }
-
-    public void GenerateQuiz()
+public void GenerateQuiz()
 {
     // Tabla de contenido para Nevada-English
     // | Nivel      | Lección | Tema/Enfoque                                      |
@@ -118,7 +94,7 @@ public class QuizGenerator : MonoBehaviour
     // | **Avanzado** | 29      | Revisión: Temas avanzados                         |
     // | **Avanzado** | 30      | Proyecto: Presentación profesional                |
 
-    string currentLesson = lessonManager.GetCurrentLesson(); // Corregido de GetCurrentLessonName()
+    string currentLesson = lessonManager.GetCurrentLesson();
     string targetWord = vocabularyTrainer.GetRandomVocabulary();
     correctAnswer = targetWord;
 
@@ -137,7 +113,7 @@ public class QuizGenerator : MonoBehaviour
                     options[1] = "3"; options[2] = "7"; options[3] = "9";
                     break;
                 case "Básico 3": // Colores básicos
-                    options[1] = "Azul"; options[2] = "Mesa"; options[3] = "Coche";
+                    options[1] = "Rojo"; options[2] = "Verde"; options[3] = "Coche"; // Ajustado
                     break;
                 // Añade más casos según la tabla
             }
@@ -147,11 +123,25 @@ public class QuizGenerator : MonoBehaviour
 
         case QuestionType.Written:
             currentQuestion = "Escribe la traducción de: " + targetWord;
+            switch (currentLesson)
+            {
+                case "Básico 1": // Saludos y presentaciones
+                    currentQuestion = "Escribe un saludo: " + targetWord;
+                    break;
+                // Añade más
+            }
             DisplayQuiz();
             break;
 
         case QuestionType.Audio:
             currentQuestion = "Pronuncia: " + targetWord;
+            switch (currentLesson)
+            {
+                case "Básico 1": // Saludos y presentaciones
+                    currentQuestion = "Pronuncia un saludo: " + targetWord;
+                    break;
+                // Añade más
+            }
             DisplayQuiz();
             break;
 
@@ -165,6 +155,9 @@ public class QuizGenerator : MonoBehaviour
                     break;
                 case "Básico 2": // Números del 1 al 10
                     options[1] = "3"; options[2] = "7"; options[3] = "9";
+                    break;
+                case "Básico 3": // Colores básicos
+                    options[1] = "Rojo"; options[2] = "Verde"; options[3] = "Coche"; // Ajustado
                     break;
                 // Añade más
             }
