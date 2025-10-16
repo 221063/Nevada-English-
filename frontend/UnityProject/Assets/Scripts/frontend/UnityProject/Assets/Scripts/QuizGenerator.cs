@@ -107,14 +107,19 @@ public void GenerateQuiz()
             switch (currentLesson)
             {
                 case "Básico 1": // Saludos y presentaciones
-                    options[1] = "Adiós"; options[2] = "Corre"; options[3] = "Salta";
+                    options[1] = "Adiós"; options[2] = "Bienvanodo"; options[3] = "Hasta pronto";
                     break;
                 case "Básico 2": // Números del 1 al 10
                     options[1] = "3"; options[2] = "7"; options[3] = "9";
                     break;
                 case "Básico 3": // Colores básicos
-                    options[1] = "Rojo"; options[2] = "Verde"; options[3] = "Coche"; // Ajustado
+                    options[1] = "Rojo"; options[2] = "Verde"; options[3] = "Azul"; 
                     break;
+                case "Básico 4": // Familia y relaciones básicas
+                    option[1] = "Madre"; options[2] = "Hermano"; options[3] = "Hijo";
+                    break;
+                case "Básico 5": // Días de la semana
+                    options[1] = "Jueves"; options[2] = "Domingo"; options[3] = "Martes";
                 // Añade más casos según la tabla
             }
             ShuffleOptions();
