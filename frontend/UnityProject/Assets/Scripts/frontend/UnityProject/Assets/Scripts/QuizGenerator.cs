@@ -107,7 +107,7 @@ public void GenerateQuiz()
             switch (currentLesson)
             {
                 case "Básico 1": // Saludos y presentaciones
-                    options[1] = "Adiós"; options[2] = "Bienvanodo"; options[3] = "Hasta pronto";
+                    options[1] = "Adiós"; options[2] = "Bienvenido"; options[3] = "Hasta pronto";
                     break;
                 case "Básico 2": // Números del 1 al 10
                     options[1] = "3"; options[2] = "7"; options[3] = "9";
@@ -116,10 +116,11 @@ public void GenerateQuiz()
                     options[1] = "Rojo"; options[2] = "Verde"; options[3] = "Azul"; 
                     break;
                 case "Básico 4": // Familia y relaciones básicas
-                    option[1] = "Madre"; options[2] = "Hermano"; options[3] = "Hijo";
+                    options[1] = "Madre"; options[2] = "Hermano"; options[3] = "Hijo";
                     break;
                 case "Básico 5": // Días de la semana
                     options[1] = "Jueves"; options[2] = "Domingo"; options[3] = "Martes";
+                    break;
                 // Añade más casos según la tabla
             }
             ShuffleOptions();
@@ -134,16 +135,16 @@ public void GenerateQuiz()
                     currentQuestion = "Escribe un saludo: " + targetWord;
                     break;
                 case "Básico 2": // Números del 1 al 10
-                    currentQuestion = "Escribe el número tres: " + targetWord;
+                    currentQuestion = "Escribe un número: " + targetWord;
                     break;
                 case "Básico 3": // Colores básicos
-                    currentQuestion = "Escribe el color rojo: " + targetWord;
+                    currentQuestion = "Escribe un color: " + targetWord;
                     break;
                 case "Básico 4": // Familia y relaciones básicas
-                    currentQuestion = "Escribe padre: " + targetWord;
+                    currentQuestion = "Escribe un miembro de la familia: " + targetWord;
                     break;
                 case "Básico 5": // Días de la semana
-                    currentQuestion = " Escribe sábado: " + targetWord;
+                    currentQuestion = "Escribe un día de la semana: " + targetWord;
                     break;
                 // Añade más
             }
@@ -158,16 +159,16 @@ public void GenerateQuiz()
                     currentQuestion = "Pronuncia un saludo: " + targetWord;
                     break;
                 case "Básico 2": // Números del 1 al 10
-                    currentQuestion = "Pronuncia cinco: " + targetWord;
+                    currentQuestion = "Pronuncia un número: " + targetWord;
                     break;
                 case "Básico 3": // Colores básicos
-                    currentQuestion = "Pronuncia azul: " + targetWord;
+                    currentQuestion = "Pronuncia un color: " + targetWord;
                     break;
                 case "Básico 4": // Familia y relaciones básicas
-                    currentQuestion = "Pronuncia tío: " + targetWord;
+                    currentQuestion = "Pronuncia un miembro de la familia: " + targetWord;
                     break;
-                case " Básico 5": // Días de la semana
-                    currentQuestion = "Pronuncia miércoles: " + targetWord;
+                case "Básico 5": // Días de la semana
+                    currentQuestion = "Pronuncia un día de la semana: " + targetWord;
                     break;
                 // Añade más
             }
@@ -186,13 +187,14 @@ public void GenerateQuiz()
                     options[1] = "3"; options[2] = "7"; options[3] = "9";
                     break;
                 case "Básico 3": // Colores básicos
-                    options[1] = "Rojo"; options[2] = "Verde"; options[3] = "azul";
+                    options[1] = "Rojo"; options[2] = "Verde"; options[3] = "Azul";
                     break;
-                case " Básico 4": // Familia y relaciones básicas
+                case "Básico 4": // Familia y relaciones básicas
                     options[1] = "Hija"; options[2] = "Hermano"; options[3] = "Madre";
                     break;
                 case "Básico 5": // Días de la semana
                     options[1] = "Jueves"; options[2] = "Martes"; options[3] = "Viernes";
+                    break;
                 // Añade más
             }
             ShuffleOptions();
